@@ -12,14 +12,13 @@
 	  <preference name="target-device" value="handset" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
 	<preference name="android-minSdkVersion" value="28" />  
-	<access origin="http://proveedores.tmeridian.com.pe:9001" />
-    <allow-navigation href="*://*.tmeridian.com.pe/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
+	<access origin="*" />
+	<allow-intent href="http://*/*" />
+	<allow-intent href="https://*/*" />
+	<allow-intent href="tel:*" />
+	<allow-intent href="sms:*" />
+	<allow-intent href="mailto:*" />
+	<allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
