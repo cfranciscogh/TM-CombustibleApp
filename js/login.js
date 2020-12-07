@@ -63,10 +63,9 @@ var loginValidar = function(){
 			   $(".loadLogin").fadeOut("fast");
 		  }
         },
-
-        error : function(jqxhr) 
+        error : function(xhr, ajaxOptions, thrownError) 
         {
-			console.log(jqxhr);
+			console.log(xhr);
 			$.mobile.loading('hide');
 			alerta('Error de conexi\u00f3n, contactese con sistemas!'); 
         }
