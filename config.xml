@@ -10,9 +10,9 @@
     <content src="splash.html" />
     <preference name="DisallowOverscroll" value="true" />
 	  <preference name="target-device" value="handset" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
-	<preference name="android-minSdkVersion" value="28" />  
+    <plugin name="cordova-plugin-whitelist" spec="1" /> 
 	<access origin="*" />
+	<allow-navigation href="*://*.tmeridian.com.pe/*" />
 	<allow-intent href="http://*/*" />
 	<allow-intent href="https://*/*" />
 	<allow-intent href="tel:*" />
