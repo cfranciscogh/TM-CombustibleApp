@@ -30,38 +30,37 @@ var loginValidar = function(){
 		{
 			location.href = "consulta.html?placa=APY717"; 
 		}
-    //console.log(rutaWS + "Autenticacion/Login.asmx/LoginFlota");
+    console.log(rutaWS + "Autenticacion/Login.asmx/LoginFlota");
 	$.mobile.loading('show');
 	var placa = $("#usuario").val();
-var pass = $("#clave").val();
-console.log('{"usuario" : "' + placa + '", "clave" : "' + pass + '"}');
+	var pass = $("#clave").val();
 	$.ajax({
         url : rutaWS + "Autenticacion/Login.asmx/LoginFlota",
         type: "POST",
 		crossDomain: true,
 		//data: {placa, pass},
         dataType : "json",
-        data : '{"usuario" : "' + placa + '", "clave" : "' + pass + '"}',
+        data : '{"usuario" : "' + $("#placa").val() + '", "clave" : "' + $("#clave").val() + '"}',
         contentType: "application/json; charset=utf-8",
         success : function(data, textStatus, jqXHR) {
-		  //console.log(data);		
-          resultado = $.parseJSON(data.d);
+		  console.log(data);		
+          resultado = data.split(',');//$.parseJSON(data.d);
 		  console.log(resultado);
-		  if ( resultado.code == 1){			  
+		  if ( resultado[1] == ""){			  
 			  	var recordar = ( $('input#recordar').is(':checked') ? 1 : 0);
-			    window.localStorage.setItem("user", placa);
-				window.localStorage.setItem("pass",pass);
+			    window.localStorage.setItem("user", $("#usuario").val());
+				window.localStorage.setItem("pass",$("#clave").val());
 				//window.localStorage.setItem("code", resultado.datos[0].codigo);				
 				window.localStorage.setItem("recordar", recordar);
 				location.href = "consulta.html?placa=" + placa; 
 		  }
 		  else{
 			   $.mobile.loading('hide');
-			   var message = resultado.message;
+			   var message = resultado[1];//resultado.message;
 			   alerta(message);
 			   //$("#usuario").val("");
 			   $("#clave").val("");
-			   $("#usuario").focus();
+			   //$("#usuario").focus();
 			   $(".loadLogin").fadeOut("fast");
 		  }
         },
