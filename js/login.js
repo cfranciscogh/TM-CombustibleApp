@@ -28,29 +28,10 @@ var loginValidar = function(){
 	$.mobile.loading('show');
 	var placa = $("#usuario").val();
 	var pass = $("#clave").val();
-	/*$.post("http://proveedores.tmeridian.com.pe:9001/api_combustible/Login", {placa, pass})
-	.done(function(data){
-		console.info(data);
-		if(data.split(',')[1]==""){ 
-			window.localStorage.setItem("txtPlaca",placa);
-			location.href = "consulta.html?placa=" + placa; 
-		}else{
-			alert(data.split(',')[1]);
-			$("#txtPass").val('');
-			$("#txtPass").focus();
-			
-		}
-			
-	}).fail(function( jqXHR, textStatus, errorThrown ) {
-		alert(textStatus);
-		console.log(jqXHR);
-	}); 
-	
-	return;*/
 	$.ajax({
         url : rutaWS + "Login",
         type: "POST",
-		crossDomain: true,
+		//crossDomain: true,
 		data: {placa, pass},
         //dataType : "json",
         //data : '{"usuario" : "' + $("#placa").val() + '", "pass" : "' + $("#clave").val() + '"}',
