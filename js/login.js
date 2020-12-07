@@ -28,7 +28,7 @@ var loginValidar = function(){
 	$.mobile.loading('show');
 	var placa = $("#usuario").val();
 	var pass = $("#clave").val();
-	$.post("http://proveedores.tmeridian.com.pe:9001/api_combustible/Login", {placa, pass})
+	/*$.post("http://proveedores.tmeridian.com.pe:9001/api_combustible/Login", {placa, pass})
 	.done(function(data){
 		console.info(data);
 		if(data.split(',')[1]==""){ 
@@ -44,30 +44,32 @@ var loginValidar = function(){
 	}).fail(function( jqXHR, textStatus, errorThrown ) {
 		alert(textStatus);
 		console.log(jqXHR);
-	}); ;
+	}); 
 	
-	return;
+	return;*/
 	$.ajax({
         url : rutaWS + "Login",
         type: "POST",
 		crossDomain: true,
-        dataType : "json",
-        data : '{"usuario" : "' + $("#placa").val() + '", "pass" : "' + $("#clave").val() + '"}',
-        contentType: "application/json; charset=utf-8",
+		data: {placa, pass},
+        //dataType : "json",
+        //data : '{"usuario" : "' + $("#placa").val() + '", "pass" : "' + $("#clave").val() + '"}',
+        //contentType: "application/json; charset=utf-8",
         success : function(data, textStatus, jqXHR) {
-          resultado = $.parseJSON(data.d);
+		  console.log(data);		
+          resultado = data.split(',');//$.parseJSON(data.d);
 		  console.log(resultado);
-		  if ( resultado.code == 1){			  
+		  if ( resultado[1] == ""){			  
 			  	var recordar = ( $('input#recordar').is(':checked') ? 1 : 0);
 			    window.localStorage.setItem("user", $("#usuario").val());
 				window.localStorage.setItem("pass",$("#clave").val());
 				//window.localStorage.setItem("code", resultado.datos[0].codigo);				
 				window.localStorage.setItem("recordar", recordar);
-				location.href = "consulta.html?user=" + resultado.datos[0].codigo; 
+				location.href = "consulta.html?placa=" + placa; 
 		  }
 		  else{
 			   $.mobile.loading('hide');
-			   var message = resultado.message;
+			   var message = resultado[1];//resultado.message;
 			   alerta(message);
 			   //$("#usuario").val("");
 			   $("#clave").val("");
