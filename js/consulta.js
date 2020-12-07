@@ -165,14 +165,7 @@ $(document).ready(function(e) {
 	   });
     });
 	
-	 
-	//cargarDeposito();
  	getConsumos();
-	
-	
-	
-	//$("#irTracking").attr("href","index.html");
-	 
 	
 });	
  
@@ -190,25 +183,13 @@ function getConsumos(){
 		$.mobile.loading('hide');
 		$(".panelMensaje").hide();
 		$(".panelOrden").fadeIn("fast");
-		var i = -1;
+		var i = 0;
 		if ( data.length > 0 ){		  
-			for (const item of data) {
-			  
-			i=i+1;
-			/*if(i==1){
-			  var cBoton= '<td><a class="btn btn-primary" href="javascript:Modificar('+ data[0].id_detalle +');"><i class="nav-icon fas fa-edit"></i></a></td>'+
-			  '<td><a class="btn btn-primary" href="javascript:Eliminar('+ data[0].id_detalle +');"><i class="nav-icon fas fa-trash"></i></a></td>';
-			}else{
-			  var cBoton= '<td></td><td></td>';
-			}
-			*/
-			$("#listProgramacion").append("<li style='position: relative;padding: 0px;' data-id='"+ $.trim(data[i].id_detalle)+"'  data-clie='"+ $.trim(data[i].id_cabecera)+"'> <label for='check" + i + "'><span style='display:block;'>"+ $.trim(data[i].num_documento) + "</span></label></li>");
-				
+			for (const item of data) {		
+				$("#listProgramacion").append("<li data-pos='" + i + "' data-id='"+ $.trim(data[i].id_detalle)+"' data-clie='"+ $.trim(data[i].id_cabecera)+"'><a onclick='Editar(this);' data-ajax='false' style='font-weight: normal;' ><b>Fecha: </b>"+ $.trim(data[i].fch_documento) + "<br><b>Nro. Ticket: </b>"+ $.trim(data[i].num_documento) + "<br><b>Galones: </b>"+ $.trim(data[i].cantidad) + "<br><b>Kilometraje: </b>"+ $.trim(data[i].kilometraje) +"</a></li>");
+				i=i+1;
 			}
 			$("#listProgramacion").listview("refresh");
-			//$("#listProgramacion").find("input").each(function(index, element) {
-				//$(this).checkboxradio().trigger('create');
-			//}); 				
 		}
 	else{
 			$(".panelOrden").hide();
@@ -262,6 +243,15 @@ function getConsumos(){
 
     });		 
 	
+}
+function Editar(ctrl){
+	var pos = $(ctrl).parent().data("pos");
+	//alert(pos);
+	if (pos == 0) {
+	$(".page1").fadeOut(100,function(){
+		 $(".page2").fadeIn();
+	 });
+	}
 }
 
 function setValidar(){
