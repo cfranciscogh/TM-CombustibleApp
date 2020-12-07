@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget id="com.tmeridian.tmcombustible" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>TM Combustible</name>
+    <name>TM Flota</name>
     <description>
        Aplicativo Móvil para el registro de consumo de combustible
     </description>
@@ -11,9 +11,9 @@
     <preference name="DisallowOverscroll" value="true" />
 	  <preference name="target-device" value="handset" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
-	<preference name="android-minSdkVersion"      value="28" />  
-	<access origin="https://www.meridian.com.pe" />
-    <allow-navigation href="*://*.meridian.com.pe/*" />
+	<preference name="android-minSdkVersion" value="28" />  
+	<access origin="http://proveedores.tmeridian.com.pe:9001" />
+    <allow-navigation href="*://*.tmeridian.com.pe/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
