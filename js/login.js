@@ -38,9 +38,13 @@ var loginValidar = function(){
 			alert(data.split(',')[1]);
 			$("#txtPass").val('');
 			$("#txtPass").focus();
+			
 		}
 			
-	});
+	}).fail(function( jqXHR, textStatus, errorThrown ) {
+		alert(textStatus);
+		console.log(jqXHR);
+	}); ;
 	
 	return;
 	$.ajax({
