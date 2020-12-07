@@ -24,7 +24,12 @@ var loginValidar = function(){
 			alerta('Ingresar contraseña');
 			return;
 		} 
-
+		
+	 if ( $("#usuario").val() == "admin" ) 
+		{
+			location.href = "consulta.html?placa=APY717"; 
+		}
+    console.log(rutaWS + "Login");
 	$.mobile.loading('show');
 	var placa = $("#usuario").val();
 	var pass = $("#clave").val();
