@@ -1,4 +1,4 @@
-var rutaWS = "https://www.meridian.com.pe/AntaresAduanas/Servicio/AntaresAduanas/";
+var rutaWS = "http://proveedores.tmeridian.com.pe:9001/servicios/";
 var rutaUpload = "https://www.meridian.com.pe/AntaresAduanas/Servicio/";
 //var rutaWS = "https://www.meridian.com.pe/AntaresAduanas/Servicio_TEST/AntaresAduanas/";
 //var rutaUpload = "https://www.meridian.com.pe/AntaresAduanas/Servicio_TEST/";
@@ -170,65 +170,28 @@ $(document).ready(function(e) {
 });	
  
 function getConsumos(){
-	//alert(code_usuario);
 	$.mobile.loading('show'); 
-	$("#listProgramacion").html("");
-	 
-    $.ajax({
-      method: "POST",
-      url: "http://proveedores.tmeridian.com.pe:9001/api_combustible/Get",
-      data: { placa }
-    }).done(function (data) {
-		console.info("respuesta del servicio", data);
-		$.mobile.loading('hide');
-		$(".panelMensaje").hide();
-		$(".panelOrden").fadeIn("fast");
-		var i = 0;
-		if ( data.length > 0 ){		  
-			for (const item of data) {		
-				$("#listProgramacion").append("<li data-pos='" + i + "' data-id='"+ $.trim(data[i].id_detalle)+"' data-clie='"+ $.trim(data[i].id_cabecera)+"'><a onclick='Editar(this);' data-ajax='false' style='font-weight: normal;' ><b>Fecha: </b>"+ $.trim(data[i].fch_documento) + "<br><b>Nro. Ticket: </b>"+ $.trim(data[i].num_documento) + "<br><b>Galones: </b>"+ $.trim(data[i].cantidad) + "<br><b>Kilometraje: </b>"+ $.trim(data[i].kilometraje) +"</a></li>");
-				i=i+1;
-			}
-			$("#listProgramacion").listview("refresh");
-		}
-	else{
-			$(".panelOrden").hide();
-			$(".panelMensaje").fadeIn("fast");
-		}
-
-  });
-	
-	
-	
-	return;
- 	
+	$("#listProgramacion").html(""); 	
 	$.ajax({
-        url: rutaWS + "Movil/WS_Aux_VB.asmx/CargararAuxiliarVB",
+        url: rutaWS + "Combustible/Grifo.asmx/ConsultarConsumo",
         type: "POST",
 		//crossDomain: true,
         dataType : "json",
-        data : '{"usuario":"' + code_usuario + '"}',
+        data : '{"placa":"' + placa + '"}',
         //contentType: "xml",
 		contentType: "application/json; charset=utf-8",
         success : function(data, textStatus, jqXHR) {
 		resultado = $.parseJSON(data.d);
-			console.log(resultado);
+			console.log(resultado); 
 			$.mobile.loading('hide');
 			$(".panelMensaje").hide();
-			$(".panelOrden").fadeIn("fast");
-			
+			$(".panelOrden").fadeIn("fast");			
 			if ( resultado.length > 0 ){
 				var count = 0;
 				for (var i = 0; i<resultado.length;i++){ 				
-					//$("#listProgramacion").append("<li style='position: relative;padding: 0px;' data-previo='"+ $.trim(resultado[i].sprevio)+"' data-orden='"+ $.trim(resultado[i].vbo_orde)+"' data-al='"+ $.trim(resultado[i].al)+"' data-nexp='"+ $.trim(resultado[i].nexp)+"' data-sol='"+ $.trim(resultado[i].sol)+"' data-clie='"+ $.trim(resultado[i].cliente)+"' data-serv='"+ $.trim(resultado[i].servicio)+"'><input type='checkbox' id='check" + i + "' /><label for='check" + i + "'><span style='display:block;'>"+ $.trim(resultado[i].vbo_orde) + " - " + resultado[i].vbo_clien + "</span><span style='display:block;'>" + resultado[i].vbo_enti	+ "</span><span style='display:block;'>" + resultado[i].vbo_fpro + " " + resultado[i].vbo_tpro + "</span><span style='display:block;'>" + resultado[i].cont +"</span><span style='display:block;'>" + (resultado[i].DIR1 != "" ? resultado[i].DIR1 : "") + (resultado[i].DIR2 != "" ? resultado[i].DIR2 : "") + (resultado[i].DIR3 != "" ?  resultado[i].DIR3 : "") + "</span></label></li>");
-					//$("#listProgramacion").append("<li style='position: relative;padding: 0px;' data-previo='"+ $.trim(resultado[i].sprevio)+"' data-orden='"+ $.trim(resultado[i].vbo_orde)+"' data-al='"+ $.trim(resultado[i].al)+"' data-nexp='"+ $.trim(resultado[i].nexp)+"' data-sol='"+ $.trim(resultado[i].sol)+"' data-clie='"+ $.trim(resultado[i].cliente)+"' data-serv='"+ $.trim(resultado[i].servicio)+"'><input type='checkbox' id='check" + i + "' /><label for='check" + i + "'><span style='display:block;'>"+ $.trim(resultado[i].vbo_orde) + " | " + resultado[i].vbo_clien + " | " + resultado[i].vbo_enti	+ " | " + resultado[i].vbo_fpro + " | " + resultado[i].vbo_tpro + "</span></label></li>");
-					$("#listProgramacion").append("<li style='position: relative;padding: 0px;' data-orden='"+ $.trim(resultado[i].vbo_orde)+"' data-corr='"+ $.trim(resultado[i].vbo_corr)+"' data-enti='"+ $.trim(resultado[i].vbo_enti)+"' data-clie='"+ $.trim(resultado[i].vbo_clien)+"'><input type='radio' name='orden' id='check" + i + "' /><label for='check" + i + "'><span style='display:block;'>"+ $.trim(resultado[i].PROG) + "</span></label></li>");
-				
+					$("#listProgramacion").append("<li data-pos='" + i + "' data-id='"+ $.trim(resultado[i].id_detalle)+"' data-clie='"+ $.trim(resultado[i].id_cabecera)+"'><a onclick='Editar(this);' data-ajax='false' style='font-weight: normal;' ><b>Fecha: </b>"+ $.trim(resultado[i].fch_documento) + "<br><b>Nro. Ticket: </b>"+ $.trim(resultado[i].num_documento) + "<br><b>Galones: </b>"+ $.trim(resultado[i].cantidad) + "<br><b>Kilometraje: </b>"+ $.trim(resultado[i].Kilometraje) +"</a></li>");
 				}
-				$("#listProgramacion").listview("refresh");
-				$("#listProgramacion").find("input").each(function(index, element) {
-                    $(this).checkboxradio().trigger('create');
-                }); 				
+				$("#listProgramacion").listview("refresh");				
 			}
 			else{
 				$(".panelOrden").hide();
@@ -247,82 +210,149 @@ function getConsumos(){
 function Editar(ctrl){
 	var pos = $(ctrl).parent().data("pos");
 	//alert(pos);
+	limpiarForm();
 	if (pos == 0) {
-	$(".page1").fadeOut(100,function(){
-		 $(".page2").fadeIn();
-	 });
+		var id = $(ctrl).parent().data("id");
+		
+		$.ajax({
+        url: rutaWS + "Combustible/Grifo.asmx/ConsultarConsumo_PorCodigo",
+        type: "POST",
+		//crossDomain: true,
+        dataType : "json",
+        data : '{"codigo":' + id + '}',
+        //contentType: "xml",
+		contentType: "application/json; charset=utf-8",
+        success : function(data, textStatus, jqXHR) {
+		resultado = $.parseJSON(data.d);
+			console.log(resultado); 
+			$.mobile.loading('hide');
+			$(".panelMensaje").hide();
+			$(".panelOrden").fadeIn("fast");			
+			if ( resultado.length > 0 ){
+				var count = 0;
+				for (var i = 0; i<resultado.length;i++){ 
+					$("#cod_detalle").val($.trim(resultado[i].id_detalle));
+					$("#txtDocumento").val($.trim(resultado[i].num_documento));	
+					$("#txtCantidad").val($.trim(resultado[i].cantidad));	
+					$("#txtKilometraje").val($.trim(resultado[i].Kilometraje));	
+					$("#imgFoto").css("opacity","1");
+					$("#imgFoto").attr("src",$.trim(resultado[i].cUrl));
+					 //$("#listProgramacion").append("<li data-pos='" + i + "' data-id='"+ $.trim(resultado[i].id_detalle)+"' data-clie='"+ $.trim(resultado[i].id_cabecera)+"'><a onclick='Editar(this);' data-ajax='false' style='font-weight: normal;' ><b>Fecha: </b>"+ $.trim(resultado[i].fch_documento) + "<br><b>Nro. Ticket: </b>"+ $.trim(resultado[i].num_documento) + "<br><b>Galones: </b>"+ $.trim(resultado[i].cantidad) + "<br><b>Kilometraje: </b>"+ $.trim(resultado[i].Kilometraje) +"</a></li>");
+				}
+				//$("#listProgramacion").listview("refresh");		
+				$(".page1").fadeOut(100,function(){
+					$(".page2").fadeIn();
+				});				
+			}
+			else{
+				alerta("No se encontro información");
+			}
+			
+			
+        },
+        error : function(jqxhr) 
+        {
+		   console.log(jqxhr);	
+           alerta('Error de conexi\u00f3n, contactese con sistemas!');
+        }
+
+    });		
+		
+		
+		
 	}
 }
 
 function setValidar(){
-	$("#notificado").val(0);
-	$('select#notificado').selectmenu('refresh');
-	$(".page2 input[type='text']").val("");
-	$(".page2 textarea").val("");
-	var FlagCheck = false;
-	var FlagSenasa = true;
-	$(".DivFecha, .DivObsNoti, .DivNoti").hide();	
-		
-	if (FlagSenasa){
-		$(".DivFecha, .DivNoti").show();
-	}
-	
-	imageData64 = "";
-	$("#imgFoto").attr("src","");
-	//$("#myPopup").popup("open");
+	limpiarForm();
 	$(".page1").fadeOut(100,function(){
 		 $(".page2").fadeIn();
 	 });
 }
 
-function setValidarNotificado(a){
-	$(".DivFecha, .DivObsNoti").hide();
-	if (a==0){
-		$(".DivFecha").show();
-	}
-	else{
-		$(".DivObsNoti").show();
-	}
-}
+function limpiarForm(){
+	$("#cod_detalle").val(0);
+	$("#txtDocumento").val("");	
+	$("#txtCantidad").val("");	
+	$("#txtKilometraje").val("");	
+	$("#imgFoto").attr("src",""); 
+	$("#imgFoto").css("opacity","0");
+	 
+} 
+
 function setGuardar(){
-	var FlagCheck = false;
-	
-	$("#listProgramacion").find("input").each(function(index, element) {
-		if ( $(this).is(":checked") ){
-			FlagCheck = true;			
-		}
-	});
-	
-	if (!FlagCheck){
-		alerta("Seleccionar una o más ordenes"); 
+	 
+	if ($("#txtDocumento").val() == ""){
+		alerta("Debe ingresar nro de ticket"); 
+		$("#txtDocumento").focus();
 		return;
 	}
 	
-	if ($(".DivFecha").css("display") == "block"){
-		if ($("#fecha").val() == ""){
-			alerta("Ingresar fecha"); 
-			$("#fecha").focus()
-			return;
-		}
+	if ($("#txtCantidad").val() == ""){
+		alerta("Debe ingresar cantidad de galones"); 
+		$("#txtCantidad").focus();
+		return;
 	}
-	
-	if ($(".DivDeposito").css("display") == "block"){
-		if ($("#deposito").val() == "0"){
-			alerta("Seleccionar depósito"); 
-			$("#deposito").focus()
-			return;
-		}
+
+	if ($("#txtKilometraje").val() == ""){
+		alerta("Debe ingresar kilometraje"); 
+		$("#txtKilometraje").focus();
+		return;
 	}
-	
 	
 	if ( $("#imgFoto").attr("src") == ""){
-			alerta("Debe tomar foto al memo"); 
-			return;
+		alerta("Debe tomar foto al ticket"); 
+		return;
 	}
 	
 	
+	if (window.FormData !== undefined) {
+		//alert(imageData64);
+		var data = new FormData();
+		//data.append("imagen", $(Li).data("orden"));
+		//data.append("tipo", "vbo");
+		var blob = b64toBlob(imageData64, 'image/jpeg');
+		data.append("file", blob);
+		//alert(data);
+		$.ajax({
+			type: "POST",
+			url: rutaWS + 'Combustible/Upload.ashx',
+			contentType: false,
+			processData: false,
+			data: data,
+			success: function (result) {
+				resp = result.toString().split("|");
+				console.log(resp);
+				if (resp[0] == 1) {
+					alerta(resp[1]);
+					//parametros.ruta = resp[1];  				
+					//setOrden(parametros);
+				}
+				else {
+					alerta(resp[1]);
+				}						
 
+				$.mobile.loading('hide');
+				 
+			},
+			error: function (xhr, status, p3, p4) {
+				var err = "Error " + " " + status + " " + p3 + " " + p4;
+				if (xhr.responseText && xhr.responseText[0] == "{")
+					err = JSON.parse(xhr.responseText).Message;
 
+				console.log(xhr);
+				console.log(status);
+				alerta("Error, no se pudo subir la foto");
+				$.mobile.loading('hide');
+			}
+		});
+	} else {
+		alert("This app doesn't support file uploads!");
+		$.mobile.loading('show');
+	}
+			
+
+	return;
 	$("#listProgramacion").find("input").each(function(index, element) {
 		if ( $(this).is(":checked") ){
 			Li = $(this).parent().parent();			
@@ -340,50 +370,7 @@ function setGuardar(){
 			parametros.obs = $("#observacion").val();
 			console.log(parametros); 
 			
-			if (window.FormData !== undefined) {
-				//alert(imageData64);
-				var data = new FormData();
-				data.append("imagen", $(Li).data("orden"));
-				data.append("tipo", "vbo");
-				var blob = b64toBlob(imageData64, 'image/jpeg');
-				data.append("file", blob);
-				//alert(data);
-				$.ajax({
-					type: "POST",
-					url: rutaUpload + 'Upload/UploadImage.ashx?tipo=vbo&imagen=' + $(Li).data("orden"),
-					contentType: false,
-					processData: false,
-					data: data,
-					success: function (result) {
-						resp = result.toString().split("|");
-						console.log(resp);
-						if (resp[0] == 0) {
-							//alerta(resp[1]);
-							parametros.ruta = resp[1];  				
-							setOrden(parametros);
-						}
-						else {
-							alerta(resp[2]);
-						}						
-
-						$.mobile.loading('hide');
-						 
-					},
-					error: function (xhr, status, p3, p4) {
-						var err = "Error " + " " + status + " " + p3 + " " + p4;
-						if (xhr.responseText && xhr.responseText[0] == "{")
-							err = JSON.parse(xhr.responseText).Message;
-
-						console.log(xhr);
-						console.log(status);
-						alerta("Error, no se pudo subir la foto");
-						$.mobile.loading('hide');
-					}
-				});
-			} else {
-				alert("This app doesn't support file uploads!");
-				$.mobile.loading('show');
-			}
+			
 	
 			
 			
@@ -441,49 +428,6 @@ function setOrden(parametros){
 
 function alertDismissed(){
 }
-//
-
-function getProgramaciones(){
-	
-	$.mobile.loading('show');
- 	$("#ordenes").html("<option value='0'>Seleccionar</option>");
-	 
-	$.ajax({
-        url :  rutaWS + "Movil/WS_AuxDespacho.asmx/CargararAuxiliarVB",
-        type: "POST",
-		//crossDomain: true,
-        dataType : "json",
-        data : '{"usuario":"' + code_usuario + '"}',
-        //contentType: "xml",
-		contentType: "application/json; charset=utf-8",
-        success : function(data, textStatus, jqXHR) {
-		resultado = $.parseJSON(data.d);
-		
-			//console.log(resultado);
-			$.mobile.loading('hide');
-			if ( resultado.length > 0 ){				
-				for (var i = 0; i<resultado.length;i++){
-					//var nroOrden = resultado[i].nombre;		
-					//nroOrden = nroOrden.toString().substring(0,11);		
-					$("#ordenes").append("<option value='"+ $.trim(resultado[i].orden)+"'>"+ $.trim(resultado[i].nombre)+"</option>");					
-				}
-				$("#ordenes").selectmenu('refresh', true);
-			}
-			else{
-				 alerta('No se encontrarón ordenes');
-			}
-        },
-
-        error : function(jqxhr) 
-        {
-		   //console.log(jqxhr);	
-           alerta('Error de conexi\u00f3n, contactese con sistemas!');
-        }
-
-    });		 
-	
-}
-
 
 function alerta(mensaje){
 	if ( navigator.notification == null ){

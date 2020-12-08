@@ -17,7 +17,7 @@
     <script type="text/javascript" src="js/jquery.mobile.datebox.i18n.es-ES.utf8.js"></script>
       
 	<script src="js/funciones.js"></script>
-	<script src="js/consulta.js?v=1.0.1"></script>
+	<script src="js/consulta.js?v=1.0.3"></script>
 	<style type="text/css">
 #myPopup {
 	overflow: hidden;
@@ -84,14 +84,14 @@ label {
              <input type="number" name="txtCantidad" id="txtCantidad" maxlength="6" />
 			</div>
 			
-            <label for="observacion">Observaci&oacute;n:</label>
+            <label for="observacion">Kilometraje:</label>
             <input type="number" name="txtKilometraje" id="txtKilometraje" maxlength="15" />
 
 			<a id="btnFoto" data-position-to="window" data-icon="camera" data-inline="true" data-corners="true" data-shadow="true" data-wrapperels="span" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-icon-camera"> Tomar Foto </a>
             <a id="btnAlbum" data-position-to="window" data-icon="search" data-inline="true" data-corners="true" data-shadow="true" data-wrapperels="span" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"> Albúm </a>
                
-				<img id="imgFoto" src="" style="width:50%;height:250px;background-color: #e6e6e6;display: block;margin: auto;" />
-              
+				<img id="imgFoto" src="" style="width:50%;height:250px;background-color: #e6e6e6;display: block;margin: auto; opacity:0;" />
+              <input  id="cod_detalle" name="cod_detalle" type="hidden" value="0" />
           </form>
         </div>
         <!-- /content -->
