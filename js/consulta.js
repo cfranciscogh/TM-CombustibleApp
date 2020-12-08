@@ -375,7 +375,7 @@ function Registrar(parametros){
 		resultado = $.parseJSON(data.d);
 		console.log(resultado);
 		$.mobile.loading('hide');
-		 if ( resultado.code == 1){		 
+		 if ( resultado.code == 0){		 
 			$(".page2").fadeOut(100,function(){
 			   $(".page1").fadeIn();
 		   });			 
