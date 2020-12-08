@@ -1,7 +1,5 @@
 var rutaWS = "http://proveedores.tmeridian.com.pe:9001/servicios/";
-var rutaUpload = "https://www.meridian.com.pe/AntaresAduanas/Servicio/";
-//var rutaWS = "https://www.meridian.com.pe/AntaresAduanas/Servicio_TEST/AntaresAduanas/";
-//var rutaUpload = "https://www.meridian.com.pe/AntaresAduanas/Servicio_TEST/";
+//var rutaWS = "http://localhost:34927/";
 var parametros = null;
 var placa = "";
 var Li = null;
@@ -305,6 +303,13 @@ function setGuardar(){
 		return;
 	}
 	
+	var parametros = new Object();
+	parametros.nro_placa = placa;	
+	parametros.num_documento = $("#txtDocumento").val();	
+	parametros.cantidad = $("#txtCantidad").val();
+	parametros.Kilometraje = $("#txtKilometraje").val();
+	parametros.cUrl = "";
+	console.log(parametros);  
 	
 	if (window.FormData !== undefined) {
 		//alert(imageData64);
@@ -324,9 +329,9 @@ function setGuardar(){
 				resp = result.toString().split("|");
 				console.log(resp);
 				if (resp[0] == 1) {
-					alerta(resp[1]);
-					//parametros.ruta = resp[1];  				
-					//setOrden(parametros);
+					//alerta(resp[1]);
+					parametros.cUrl = resp[1];  				
+					Registrar(parametros);
 				}
 				else {
 					alerta(resp[1]);
@@ -350,44 +355,15 @@ function setGuardar(){
 		alert("This app doesn't support file uploads!");
 		$.mobile.loading('show');
 	}
-			
-
-	return;
-	$("#listProgramacion").find("input").each(function(index, element) {
-		if ( $(this).is(":checked") ){
-			Li = $(this).parent().parent();			
-			$.mobile.loading('show'); 
-			
-			var parametros = new Object();
-			parametros.usu = code_usuario;	
-			parametros.orden = $(Li).data("orden");	
-			parametros.correlativo = $(Li).data("corr");
-			parametros.entidad = $(Li).data("enti");
-			parametros.tipomemo = "DEFINITIVO";// 0;//$(Li).data("serv");
-			parametros.dtdevol = $("#deposito").val();
-			parametros.fecsob = $("#fecha").val();
-			parametros.ruta = '';//"\\10.93.1.233\Siad\VistoBueno\VistoBueno\Memos\";
-			parametros.obs = $("#observacion").val();
-			console.log(parametros); 
-			
-			
-	
-			
-			
-			
-			
-			 
-		}			 
-	});
- 	
+			 	
 }
  
-function setOrden(parametros){
+function Registrar(parametros){
 	console.log(parametros);	
 	//return;	
 	$.mobile.loading('show'); 
 	$.ajax({
-	url :  rutaWS + "Movil/WS_Aux_VB.asmx/Grabar",
+	url :  rutaWS + "Combustible/Grifo.asmx/Registrar",
 	type: "POST",
 	//crossDomain: true,
 	dataType : "json",
@@ -399,23 +375,14 @@ function setOrden(parametros){
 		resultado = $.parseJSON(data.d);
 		console.log(resultado);
 		$.mobile.loading('hide');
-		 if ( resultado.code == 1){
-			$("#observacion").val("");
-			$("#deposito").val("0");
-			$("#deposito").selectmenu('refresh', true);
-			$("#fecha").val("");	
-			$(Li).remove();	
-			 
+		 if ( resultado.code == 1){		 
 			$(".page2").fadeOut(100,function(){
 			   $(".page1").fadeIn();
-		   });
-			 
-			getOrdenes();				
+		   });			 
+			getConsumos();				
 		 }			  
-		 alerta(resultado.message);
-			 
+		 alerta(resultado.message); 
 		},
-
 		error : function(jqxhr) 
 		{ 
 			console.log(jqxhr);
