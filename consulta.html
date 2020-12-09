@@ -90,8 +90,9 @@ label {
 			<a id="btnFoto" data-position-to="window" data-icon="camera" data-inline="true" data-corners="true" data-shadow="true" data-wrapperels="span" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-icon-camera"> Tomar Foto </a>
             <a id="btnAlbum" data-position-to="window" data-icon="search" data-inline="true" data-corners="true" data-shadow="true" data-wrapperels="span" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"> Albúm </a>
                
-				<img id="imgFoto" src="" style="width:50%;height:250px;background-color: #e6e6e6;display: block;margin: auto; opacity:0;" />
-              <input  id="cod_detalle" name="cod_detalle" type="hidden" value="0" />
+			<img id="imgFoto" src="" style="object-fit: cover;width:50%;height:250px;background-color: #e6e6e6;display: block;margin: auto; opacity:0;" />
+			<input  id="cod_detalle" name="cod_detalle" type="hidden" value="0" />
+			<input  id="img_detalle" name="img_detalle" type="hidden" value="" />
           </form>
         </div>
         <!-- /content -->
@@ -99,7 +100,8 @@ label {
           <div data-role="navbar" data-iconpos="top">
             <ul>
               <li><a id="btnContinuar" data-icon="check">Continuar</a></li>
-              <li><a id="btnCancelar" data-icon="delete">Cancelar</a></li>
+			  <li><a id="btnEliminar" data-icon="delete">Eliminar</a></li>
+              <li><a id="btnCancelar" data-icon="arrow-l">Regresar</a></li>
             </ul>
           </div>
         </div>

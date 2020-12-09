@@ -65,8 +65,10 @@ function sendImage(src) {
  
 function CamaraSuccess(imageData) {
     //$.mobile.loading('show'); 
+	$("#img_detalle").val();
 	imageData64 = imageData;
 	$("#imgFoto").attr("src", "data:image/jpeg;base64," + imageData);
+	$("#imgFoto").css("opacity","1");
 	//alert(imageData);
 	return;
 	
@@ -157,6 +159,10 @@ $(document).ready(function(e) {
         setGuardar();
     });
 	
+	$("#btnEliminar").click(function(e) {
+        setEliminar();
+    });
+	
 	$("#btnCancelar").click(function(e) {
        $(".page2").fadeOut(100,function(){
 		   $(".page1").fadeIn();
@@ -180,7 +186,7 @@ function getConsumos(){
 		contentType: "application/json; charset=utf-8",
         success : function(data, textStatus, jqXHR) {
 		resultado = $.parseJSON(data.d);
-			console.log(resultado); 
+			//console.log(resultado); 
 			$.mobile.loading('hide');
 			$(".panelMensaje").hide();
 			$(".panelOrden").fadeIn("fast");			
@@ -205,6 +211,7 @@ function getConsumos(){
     });		 
 	
 }
+
 function Editar(ctrl){
 	var pos = $(ctrl).parent().data("pos");
 	//alert(pos);
@@ -222,7 +229,7 @@ function Editar(ctrl){
 		contentType: "application/json; charset=utf-8",
         success : function(data, textStatus, jqXHR) {
 		resultado = $.parseJSON(data.d);
-			console.log(resultado); 
+			//console.log(resultado); 
 			$.mobile.loading('hide');
 			$(".panelMensaje").hide();
 			$(".panelOrden").fadeIn("fast");			
@@ -235,9 +242,14 @@ function Editar(ctrl){
 					$("#txtKilometraje").val($.trim(resultado[i].Kilometraje));	
 					$("#imgFoto").css("opacity","1");
 					$("#imgFoto").attr("src",$.trim(resultado[i].cUrl));
+					var arrFoto = resultado[i].cUrl.toString().split("/");
+					$("#img_detalle").val(arrFoto[arrFoto.length-1]);
 					 //$("#listProgramacion").append("<li data-pos='" + i + "' data-id='"+ $.trim(resultado[i].id_detalle)+"' data-clie='"+ $.trim(resultado[i].id_cabecera)+"'><a onclick='Editar(this);' data-ajax='false' style='font-weight: normal;' ><b>Fecha: </b>"+ $.trim(resultado[i].fch_documento) + "<br><b>Nro. Ticket: </b>"+ $.trim(resultado[i].num_documento) + "<br><b>Galones: </b>"+ $.trim(resultado[i].cantidad) + "<br><b>Kilometraje: </b>"+ $.trim(resultado[i].Kilometraje) +"</a></li>");
 				}
-				//$("#listProgramacion").listview("refresh");		
+				//$("#listProgramacion").listview("refresh");
+				$(".page2 ul li").eq(1).show();
+				$(".page2 ul").attr("class","ui-grid-b");
+				$(".page2 ul li").eq(2).attr("class","ui-block-c");					
 				$(".page1").fadeOut(100,function(){
 					$(".page2").fadeIn();
 				});				
@@ -263,6 +275,9 @@ function Editar(ctrl){
 
 function setValidar(){
 	limpiarForm();
+	$(".page2 ul li").eq(1).hide();
+	$(".page2 ul").attr("class","ui-grid-a");
+	$(".page2 ul li").eq(2).attr("class","ui-block-b");	
 	$(".page1").fadeOut(100,function(){
 		 $(".page2").fadeIn();
 	 });
@@ -275,7 +290,7 @@ function limpiarForm(){
 	$("#txtKilometraje").val("");	
 	$("#imgFoto").attr("src",""); 
 	$("#imgFoto").css("opacity","0");
-	 
+	$("#img_detalle").val("");
 } 
 
 function setGuardar(){
@@ -304,58 +319,62 @@ function setGuardar(){
 	}
 	
 	var parametros = new Object();
+	parametros.id_detalle = $("#cod_detalle").val();	
 	parametros.nro_placa = placa;	
 	parametros.num_documento = $("#txtDocumento").val();	
 	parametros.cantidad = $("#txtCantidad").val();
 	parametros.Kilometraje = $("#txtKilometraje").val();
-	parametros.cUrl = "";
-	console.log(parametros);  
-	
-	if (window.FormData !== undefined) {
-		//alert(imageData64);
-		var data = new FormData();
-		//data.append("imagen", $(Li).data("orden"));
-		//data.append("tipo", "vbo");
-		var blob = b64toBlob(imageData64, 'image/jpeg');
-		data.append("file", blob);
-		//alert(data);
-		$.ajax({
-			type: "POST",
-			url: rutaWS + 'Combustible/Upload.ashx',
-			contentType: false,
-			processData: false,
-			data: data,
-			success: function (result) {
-				resp = result.toString().split("|");
-				console.log(resp);
-				if (resp[0] == 1) {
-					//alerta(resp[1]);
-					parametros.cUrl = resp[1];  				
-					Registrar(parametros);
-				}
-				else {
-					alerta(resp[1]);
-				}						
-
-				$.mobile.loading('hide');
-				 
-			},
-			error: function (xhr, status, p3, p4) {
-				var err = "Error " + " " + status + " " + p3 + " " + p4;
-				if (xhr.responseText && xhr.responseText[0] == "{")
-					err = JSON.parse(xhr.responseText).Message;
-
-				console.log(xhr);
-				console.log(status);
-				alerta("Error, no se pudo subir la foto");
-				$.mobile.loading('hide');
-			}
-		});
-	} else {
-		alert("This app doesn't support file uploads!");
-		$.mobile.loading('show');
+	parametros.cUrl = $("#img_detalle").val();
+	//console.log(parametros);  
+	if (parametros.cUrl != ""){
+		Registrar(parametros);
 	}
-			 	
+	else {
+		if (window.FormData !== undefined) {
+			//alert(imageData64);
+			var data = new FormData();
+			//data.append("imagen", $(Li).data("orden"));
+			//data.append("tipo", "vbo");
+			var blob = b64toBlob(imageData64, 'image/jpeg');
+			data.append("file", blob);
+			//alert(data);
+			$.ajax({
+				type: "POST",
+				url: rutaWS + 'Combustible/Upload.ashx',
+				contentType: false,
+				processData: false,
+				data: data,
+				success: function (result) {
+					resp = result.toString().split("|");
+					console.log(resp);
+					if (resp[0] == 1) {
+						//alerta(resp[1]);
+						parametros.cUrl = resp[1];  				
+						Registrar(parametros);
+					}
+					else {
+						alerta(resp[1]);
+					}						
+
+					$.mobile.loading('hide');
+					 
+				},
+				error: function (xhr, status, p3, p4) {
+					var err = "Error " + " " + status + " " + p3 + " " + p4;
+					if (xhr.responseText && xhr.responseText[0] == "{")
+						err = JSON.parse(xhr.responseText).Message;
+
+					console.log(xhr);
+					console.log(status);
+					alerta("Error, no se pudo subir la foto");
+					$.mobile.loading('hide');
+				}
+			});
+		} else {
+			alert("This app doesn't support file uploads!");
+			$.mobile.loading('show');
+		}
+	}	 	
 }
  
 function Registrar(parametros){
@@ -371,11 +390,46 @@ function Registrar(parametros){
 	contentType: "application/json; charset=utf-8",
 	success : function(data, textStatus, jqXHR) {
 		//console
-		console.log(data.d);
+		//console.log(data.d);
 		resultado = $.parseJSON(data.d);
-		console.log(resultado);
+		//console.log(resultado);
 		$.mobile.loading('hide');
 		 if ( resultado.code == 0){		 
+			$(".page2").fadeOut(100,function(){
+			   $(".page1").fadeIn();
+		   });			 
+			getConsumos();				
+		 }			  
+		 alerta(resultado.message); 
+		},
+		error : function(jqxhr) 
+		{ 
+			console.log(jqxhr);
+		  alerta('Error de conexi\u00f3n, contactese con sistemas!');
+		}
+
+	});
+}
+
+function setEliminar(){
+	var parametros = new Object();
+	parametros.id_detalle = $("#cod_detalle").val();	 
+	//return;	
+	$.mobile.loading('show'); 
+	$.ajax({
+	url :  rutaWS + "Combustible/Grifo.asmx/Eliminar",
+	type: "POST",
+	//crossDomain: true,
+	dataType : "json",
+	data : JSON.stringify(parametros),
+	contentType: "application/json; charset=utf-8",
+	success : function(data, textStatus, jqXHR) {
+		//console
+		//console.log(data.d);
+		resultado = $.parseJSON(data.d);
+		//console.log(resultado);
+		$.mobile.loading('hide');
+		 if ( resultado.code == 1){		 
 			$(".page2").fadeOut(100,function(){
 			   $(".page1").fadeIn();
 		   });			 
