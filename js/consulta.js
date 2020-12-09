@@ -317,7 +317,7 @@ function setGuardar(){
 		alerta("Debe tomar foto al ticket"); 
 		return;
 	}
-	
+	$.mobile.loading('show'); 
 	var parametros = new Object();
 	parametros.id_detalle = $("#cod_detalle").val();	
 	parametros.nro_placa = placa;	
@@ -345,8 +345,9 @@ function setGuardar(){
 				processData: false,
 				data: data,
 				success: function (result) {
+					$.mobile.loading('hide'); 
 					resp = result.toString().split("|");
-					console.log(resp);
+					//console.log(resp);
 					if (resp[0] == 1) {
 						//alerta(resp[1]);
 						parametros.cUrl = resp[1];  				
@@ -378,7 +379,7 @@ function setGuardar(){
 }
  
 function Registrar(parametros){
-	console.log(parametros);	
+	//console.log(parametros);	
 	//return;	
 	$.mobile.loading('show'); 
 	$.ajax({
